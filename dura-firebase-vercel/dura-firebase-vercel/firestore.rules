@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    match /patients/{patientId} {
+      allow read, write: if signedIn();
+    }
+
+    match /duraRecords/{recordId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    match /serviceRecords/{recordId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    match /nursingSummaries/{summaryId} {
+      allow read, create, update, delete: if signedIn();
+    }
+
+    match /medicationDispatches/{dispatchId} {
+      allow read, create, update, delete: if signedIn();
+    }
+  }
+}
